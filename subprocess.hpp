@@ -959,6 +959,10 @@ public:
     if (!defer_process_start_) execute_process();
   }
 
+  // Copying is not supported and causes all sorts of issues with input and
+  // output file descriptors
+  Popen(const Popen&) = delete;
+
   void start_process() throw (CalledProcessError, OSError);
 
   int pid() const noexcept { return child_pid_; }
