@@ -959,6 +959,18 @@ public:
     if (!defer_process_start_) execute_process();
   }
 
+  template <typename... Args>
+  Popen(std::vector<const char*> cmd_args, Args&& ...args)
+  {
+    vargs_.insert(vargs_.end(), cmd_args.begin(), cmd_args.end());
+    init_args(std::forward<Args>(args)...);
+
+    // Setup the communication channels of the Popen class
+    stream_.setup_comm_channels();
+
+    if (!defer_process_start_) execute_process();
+  }
+
   // Copying is not supported and causes all sorts of issues with input and
   // output file descriptors
   Popen(const Popen&) = delete;
